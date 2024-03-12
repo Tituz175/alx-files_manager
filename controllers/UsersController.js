@@ -6,6 +6,12 @@ import dbClient from '../utils/db';
 const userQueue = new Queue('email sending');
 
 export default class UsersController {
+  /**
+   * Handles the creation of a new user.
+   * @param {Object} req - The request object.
+   * @param {Object} res - The response object.
+   * @returns {Object} - JSON response with user details or error message.
+   */
   static async postNew(req, res) {
     const email = req.body ? req.body.email : null;
     const password = req.body ? req.body.password : null;
@@ -32,6 +38,12 @@ export default class UsersController {
     res.status(201).json({ email, id: userId });
   }
 
+  /**
+   * Retrieves the details of the current user.
+   * @param {Object} req - The request object.
+   * @param {Object} res - The response object.
+   * @returns {Object} - JSON response with user details.
+   */
   static async getMe(req, res) {
     const { user } = req;
 
