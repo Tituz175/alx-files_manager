@@ -1,7 +1,9 @@
-import mongodb from 'mongodb';
 // eslint-disable-next-line no-unused-vars
 import Collection from 'mongodb/lib/collection';
+
 import envLoader from './env_loader';
+
+const { MongoClient } = require('mongodb');
 
 /**
  * Represents a MongoDB client.
@@ -12,12 +14,11 @@ class DBClient {
    */
   constructor() {
     envLoader();
-    const host = process.env.DB_HOST || 'localhost';
-    const port = process.env.DB_PORT || 27017;
-    const database = process.env.DB_DATABASE || 'files_manager';
-    const dbURL = `mongodb://${host}:${port}/${database}`;
-
-    this.client = new mongodb.MongoClient(dbURL, { useUnifiedTopology: true });
+    const host = process.env.DB_HOST ? process.env.DB_HOST : 'localhost';
+    const port = process.env.DB_PORT ? process.env.DB_PORT : '27017';
+    const database = process.env.DB_DATABASE ? process.env.DB_DATABASE : 'file_manager';
+    const url = `mongodb://${host}:${port}/${database}`;
+    this.client = new MongoClient(url, { useUnifiedTopology: true });
     this.client.connect();
   }
 
@@ -62,5 +63,5 @@ class DBClient {
   }
 }
 
-export const dbClient = new DBClient();
-export default dbClient;
+const dbClient = new DBClient();
+module.exports = dbClient;
