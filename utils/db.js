@@ -6,24 +6,24 @@ import envLoader from './env_loader';
 const { MongoClient } = require('mongodb');
 
 /**
- * Represents a MongoDB client.
+ * Content of this file is for a MongoDB client.
  */
 class DBClient {
   /**
-   * Creates a new DBClient instance.
+   * A blueprint for DBClient instance.
    */
   constructor() {
     envLoader();
-    const host = process.env.DB_HOST ? process.env.DB_HOST : 'localhost';
-    const port = process.env.DB_PORT ? process.env.DB_PORT : '27017';
-    const database = process.env.DB_DATABASE ? process.env.DB_DATABASE : 'file_manager';
+    const host = process.env.DB_HOST || 'localhost';
+    const port = process.env.DB_PORT || 27017;
+    const database = process.env.DB_DATABASE || 'files_manager';
     const url = `mongodb://${host}:${port}/${database}`;
     this.client = new MongoClient(url, { useUnifiedTopology: true });
     this.client.connect();
   }
 
   /**
-   * Checks if this client's connection to the MongoDB server is active.
+   * Checks the MongoDB server client's connection to the is active.
    * @returns {boolean}
    */
   isAlive() {
@@ -31,7 +31,7 @@ class DBClient {
   }
 
   /**
-   * Retrieves the number of users in the database.
+   * Gets the number of users stored in the database.
    * @returns {Promise<Number>}
    */
   async nbUsers() {
@@ -39,7 +39,7 @@ class DBClient {
   }
 
   /**
-   * Retrieves the number of files in the database.
+   * Gets the number of files stored in the database.
    * @returns {Promise<Number>}
    */
   async nbFiles() {
@@ -47,7 +47,7 @@ class DBClient {
   }
 
   /**
-   * Retrieves a reference to the `users` collection.
+   * Gets `users` reference to the collection.
    * @returns {Promise<Collection>}
    */
   async usersCollection() {
@@ -55,7 +55,7 @@ class DBClient {
   }
 
   /**
-   * Retrieves a reference to the `files` collection.
+   * Get `files` reference to the collection.
    * @returns {Promise<Collection>}
    */
   async filesCollection() {
