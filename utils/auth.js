@@ -17,15 +17,14 @@ export const getUserFromAuthorization = async (req) => {
   if (!authorization) {
     return null;
   }
-  const authorizationParts = authorization.split(' ');
+  const authorizationArray = authorization.split(' ');
 
-  if (authorizationParts.length !== 2 || authorizationParts[0] !== 'Basic') {
+  if (authorizationArray[0] !== 'Basic' || authorizationArray.length !== 2) {
     return null;
   }
-  const token = Buffer.from(authorizationParts[1], 'base64').toString();
-  const sepPos = token.indexOf(':');
-  const email = token.substring(0, sepPos);
-  const password = token.substring(sepPos + 1);
+  const token = Buffer.from(authorizationArray[1], 'base64').toString();
+  const email = token.substring(0, token.indexOf(':'));
+  const password = token.substring(token.indexOf(':') + 1);
   const user = await (await dbClient.usersCollection()).findOne({ email });
 
   if (!user || sha1(password) !== user.password) {
@@ -38,7 +37,7 @@ export const getUserFromAuthorization = async (req) => {
  * Fetches the user from the X-Token header in the given request object.
  * @param {Request} req The Express request object.
  * @returns {Promise<{_id: ObjectId, email: string, password: string}>}
- */
+*/
 export const getUserFromXToken = async (req) => {
   const token = req.headers['x-token'];
 
